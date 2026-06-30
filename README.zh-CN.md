@@ -8,6 +8,15 @@ D-academic-agent 是一个用于学术阅读和证据核验的桌面工作区。
 
 它是本地优先的工具。你可以先用内置示例语料试用，不需要 API key。只有在你主动连接在线提供方时，部分检索词或证据片段才可能离开本机。
 
+## 下载
+
+最新打包版本发布在 GitHub：
+
+- [下载最新版](https://github.com/handong66/D-academic-agent/releases/latest)
+- macOS Apple Silicon：[D-academic-agent-v0.1.0-mac-arm64.zip](https://github.com/handong66/D-academic-agent/releases/download/v0.1.0/D-academic-agent-v0.1.0-mac-arm64.zip)
+
+目前 macOS 应用尚未 notarize。若系统提示来自未识别开发者，请右键点击应用，选择“打开”，再确认运行。Intel Mac、Windows 和 Linux 用户目前请先从源码运行。
+
 ## 你可以用它做什么
 
 - 检查带引用的草稿段落，看每个论断是被支持、弱支持、不支持、反驳，还是证据不明确。
@@ -72,7 +81,7 @@ D-academic-agent 不是代写论文工具。它是阅读、核对和改写前检
 
 ## 快速开始
 
-你需要先安装 Node.js 和 npm。目前应用从源码运行。
+从源码运行时，你需要先安装 Node.js 和 npm。
 
 ```sh
 npm install

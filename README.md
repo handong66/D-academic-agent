@@ -10,6 +10,16 @@ It helps researchers, students, reviewers, and editors ask a practical question:
 The app is local-first. You can try it with the built-in sample corpus without an API key. When you connect optional
 online providers, some search text or evidence snippets may leave your computer.
 
+## Download
+
+The latest packaged release is available on GitHub:
+
+- [Download the latest release](https://github.com/handong66/D-academic-agent/releases/latest)
+- macOS Apple Silicon: [D-academic-agent-v0.1.0-mac-arm64.zip](https://github.com/handong66/D-academic-agent/releases/download/v0.1.0/D-academic-agent-v0.1.0-mac-arm64.zip)
+
+The macOS app is not notarized yet. If macOS blocks it as an app from an unidentified developer, right-click the app,
+choose **Open**, then confirm. Intel Mac, Windows, and Linux users should run from source for now.
+
 ## What You Can Do
 
 - Check a draft paragraph with citations and see which claims are supported, weakly supported, unsupported,
@@ -81,7 +91,7 @@ switch language or theme.
 
 ## Quick Start
 
-You need Node.js and npm. The app currently runs from source.
+You need Node.js and npm when running from source.
 
 ```sh
 npm install
