@@ -1,0 +1,225 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to build, for example v0.1.1"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  NODE_VERSION: "22"
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+
+jobs:
+  verify:
+    name: Verify release ref
+    runs-on: macos-15-intel
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure tag matches package version
+        run: |
+          set -euo pipefail
+          package_version="$(node -p "require('./package.json').version")"
+          tag_version="${RELEASE_TAG#v}"
+          if [ "$package_version" != "$tag_version" ]; then
+            echo "package.json version ($package_version) does not match release tag ($RELEASE_TAG)" >&2
+            exit 1
+          fi
+
+      - name: Test
+        run: npm test
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+  build-mac:
+    name: Build macOS ${{ matrix.arch }}
+    needs: verify
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-15
+            script: package:mac:arm64
+          - arch: x64
+            runner: macos-15-intel
+            script: package:mac:x64
+    runs-on: ${{ matrix.runner }}
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package
+        run: npm run ${{ matrix.script }}
+
+      - name: Collect artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets universal-inputs
+          cp release/*.zip release-assets/
+          ditto -c -k --sequesterRsrc --keepParent \
+            "release/mac-${{ matrix.arch }}/D-academic-agent.app" \
+            "universal-inputs/D-academic-agent-v$(node -p "require('./package.json').version")-mac-${{ matrix.arch }}-app.zip"
+          (cd release-assets && shasum -a 256 ./*.zip > "SHA256SUMS-${{ matrix.arch }}.txt")
+          ls -lh release-assets universal-inputs
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-release-${{ matrix.arch }}
+          path: release-assets/*
+          if-no-files-found: error
+
+      - name: Upload app artifact for universal merge
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-app-${{ matrix.arch }}
+          path: universal-inputs/*
+          if-no-files-found: error
+
+  build-mac-universal:
+    name: Build macOS universal
+    needs: build-mac
+    runs-on: macos-15-intel
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download arm64 app
+        uses: actions/download-artifact@v4
+        with:
+          name: mac-app-arm64
+          path: universal-inputs/arm64
+
+      - name: Download x64 app
+        uses: actions/download-artifact@v4
+        with:
+          name: mac-app-x64
+          path: universal-inputs/x64
+
+      - name: Merge universal app
+        run: |
+          set -euo pipefail
+          mkdir -p release/mac-arm64 release/mac-x64
+          ditto -x -k universal-inputs/arm64/*-app.zip release/mac-arm64
+          ditto -x -k universal-inputs/x64/*-app.zip release/mac-x64
+          npm run package:mac:universal
+
+      - name: Collect universal artifact
+        run: |
+          set -euo pipefail
+          mkdir -p release-assets
+          cp release/*-mac-universal.zip release-assets/
+          (cd release-assets && shasum -a 256 ./*.zip > SHA256SUMS-universal.txt)
+          ls -lh release-assets
+
+      - name: Upload universal release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-release-universal
+          path: release-assets/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub release
+    needs: build-mac-universal
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: mac-release-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Prepare release notes
+        run: |
+          set -euo pipefail
+          sort -k2 release-assets/SHA256SUMS-*.txt > release-assets/SHA256SUMS.txt
+          {
+            echo "Automated macOS release for D-academic-agent ${RELEASE_TAG}."
+            echo
+            echo "Assets:"
+            find release-assets -maxdepth 1 -name "*.zip" -print | sort | sed 's#release-assets/#- #'
+            echo
+            echo "SHA-256:"
+            echo '```'
+            cat release-assets/SHA256SUMS.txt
+            echo '```'
+            echo
+            echo "Notes:"
+            echo "- macOS builds are not notarized yet. If macOS blocks the app as an unidentified developer app, right-click the app, choose Open, then confirm."
+            echo "- Use the universal build when you want one download that supports both Intel and Apple Silicon Macs."
+          } > release-notes.md
+
+      - name: Create or update release
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" release-assets/*.zip release-assets/SHA256SUMS.txt --clobber
+            gh release edit "$RELEASE_TAG" --title "D-academic-agent ${RELEASE_TAG}" --notes-file release-notes.md
+          else
+            gh release create "$RELEASE_TAG" release-assets/*.zip release-assets/SHA256SUMS.txt \
+              --verify-tag \
+              --title "D-academic-agent ${RELEASE_TAG}" \
+              --notes-file release-notes.md
+          fi

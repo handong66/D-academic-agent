@@ -11,7 +11,11 @@
     "harness": "tsx src/cli.ts",
     "build:app": "node electron/build.mjs",
     "screenshots:readme": "npm run build:app && node scripts/capture-readme-screenshots.mjs",
-    "package": "npm run build:app && electron-rebuild -v 42.4.1 -w better-sqlite3 --force && electron-builder --mac --dir; status=$?; npm rebuild better-sqlite3 >/dev/null; exit $status",
+    "package": "node scripts/package-mac.mjs dir",
+    "package:mac:dir": "node scripts/package-mac.mjs dir",
+    "package:mac:arm64": "node scripts/package-mac.mjs arm64",
+    "package:mac:x64": "node scripts/package-mac.mjs x64",
+    "package:mac:universal": "node scripts/package-mac.mjs universal",
     "start": "node electron/build.mjs && electron electron/dist/main.cjs",
     "acceptance": "node electron/build.mjs && node scripts/acceptance.mjs"
   },
@@ -21,6 +25,7 @@
     "directories": {
       "output": "release"
     },
+    "artifactName": "${productName}-v${version}-${os}-${arch}.${ext}",
     "files": [
       "electron/dist/**",
       "electron/renderer/dist/**",
@@ -36,7 +41,9 @@
       "target": [
         "dir"
       ],
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "mergeASARs": true,
+      "singleArchFiles": "**/*.node"
     },
     "npmRebuild": false,
     "extraResources": [
@@ -59,6 +66,7 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@electron/universal": "^2.0.3",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.17",

@@ -66,7 +66,14 @@ For packaging:
 
 ```sh
 npm run package
+npm run package:mac:arm64
+npm run package:mac:x64
+npm run package:mac:universal
 ```
+
+Tagged pushes matching `v*.*.*` run the GitHub Actions release workflow, verify the release ref, build macOS
+`arm64`, `x64`, and `universal` zip assets, and create or update the matching GitHub Release. macOS builds are
+currently unsigned and not notarized.
 
 Live scite, Consensus REST, Consensus MCP, OAuth browser, and remote model checks are intentionally gated by user
 credentials and environment. Do not present them as verified unless those live credentials were supplied for the
