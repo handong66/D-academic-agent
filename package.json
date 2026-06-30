@@ -1,0 +1,77 @@
+{
+  "name": "d-academic-agent",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsx src/lint/invariants.ts",
+    "freeze": "tsx scripts/freeze.ts",
+    "harness": "tsx src/cli.ts",
+    "build:app": "node electron/build.mjs",
+    "package": "npm run build:app && electron-rebuild -v 42.4.1 -w better-sqlite3 --force && electron-builder --mac --dir; status=$?; npm rebuild better-sqlite3 >/dev/null; exit $status",
+    "start": "node electron/build.mjs && electron electron/dist/main.cjs",
+    "acceptance": "node electron/build.mjs && node scripts/acceptance.mjs"
+  },
+  "build": {
+    "appId": "com.handong.d-academic-agent",
+    "productName": "D-academic-agent",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/dist/**",
+      "electron/renderer/dist/**",
+      "electron/renderer/index.html",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/build/Release/**",
+      "node_modules/onnxruntime-node/bin/**",
+      "node_modules/@img/**"
+    ],
+    "mac": {
+      "target": [
+        "dir"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "npmRebuild": false,
+    "extraResources": [
+      "fixtures/**"
+    ]
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.51",
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/hanken-grotesk": "^5.2.8",
+    "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@huggingface/transformers": "^4.2.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@tabler/icons-react": "^3.44.0",
+    "ai": "^6.0.208",
+    "better-sqlite3": "^12.11.1",
+    "citation-js": "^0.7.14",
+    "fast-xml-parser": "^5.9.3",
+    "unpdf": "^1.6.2",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.1",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.61.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "main": "electron/dist/main.cjs"
+}

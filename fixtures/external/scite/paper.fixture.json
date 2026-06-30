@@ -1,0 +1,35 @@
+{
+  "abstract": "A fixture paper response using observed C0 PaperResponse fields.",
+  "authors": [
+    { "name": "Jane Doe" },
+    { "first": "John", "last": "Smith" }
+  ],
+  "doi": "10.1016/j.biopsych.2005.08.012",
+  "editorialNotices": [
+    {
+      "status": "correction",
+      "date": "2022-05-06",
+      "noticeDoi": "10.0000/correction",
+      "urls": ["https://example.test/correction"]
+    }
+  ],
+  "id": "paper-123",
+  "issns": ["0006-3223"],
+  "issue": "1",
+  "journal": "Biological Psychiatry",
+  "journalSlug": "biological-psychiatry",
+  "keywords": ["sleep", "academic performance"],
+  "memberId": 78,
+  "normalizedTypes": ["journal-article"],
+  "page": "1-10",
+  "preprintLinks": [],
+  "publicationLinks": [],
+  "publisher": "Elsevier",
+  "retracted": false,
+  "shortJournal": "Biol Psychiatry",
+  "slug": "sleep-and-academic-performance",
+  "title": "Sleep and academic performance in adolescents",
+  "type": "journal-article",
+  "volume": "61",
+  "year": 2006
+}

@@ -1,0 +1,615 @@
+{
+  "source": {
+    "openapiUrl": "https://api.scite.ai/openapi.json",
+    "oauthAuthorizationServerUrl": "https://api.scite.ai/.well-known/oauth-authorization-server",
+    "captureNotes": [
+      "OpenAPI was fetched through the web channel because local shell network is blocked in this environment.",
+      "Objects below are copied from the live OpenAPI/web evidence. The PaperResponse component itself could not be fully expanded through the web renderer, so the endpoint response $ref and observed example field names are preserved instead of inventing schema details."
+    ]
+  },
+  "paths": {
+    "/tallies/{doi}": {
+      "get": {
+        "tags": [
+          "Smart Citation Tallies"
+        ],
+        "summary": "Get tallies for DOI",
+        "operationId": "get_tally_tallies__doi__get",
+        "parameters": [
+          {
+            "name": "doi",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Doi"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Set to `Bearer ` to pass token for authorization.",
+              "title": "Authorization"
+            },
+            "description": "Set to `Bearer ` to pass token for authorization."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TallyResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/papers/{doi}": {
+      "get": {
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Get Single Paper",
+        "description": "Get paper metadata for DOI.",
+        "operationId": "get_paper_papers__doi__get",
+        "parameters": [
+          {
+            "name": "doi",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Doi"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Set to `Bearer ` to pass token for authorization.",
+              "title": "Authorization"
+            },
+            "description": "Set to `Bearer ` to pass token for authorization."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaperResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api_partner/search": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Get search results from a query",
+        "operationId": "get_search_api_partner_search_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResultsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TallyResponse": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "supporting": {
+            "type": "integer",
+            "title": "Supporting"
+          },
+          "contradicting": {
+            "type": "integer",
+            "title": "Contradicting"
+          },
+          "mentioning": {
+            "type": "integer",
+            "title": "Mentioning"
+          },
+          "unclassified": {
+            "type": "integer",
+            "title": "Unclassified"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          },
+          "citingPublications": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Citingpublications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "supporting",
+          "contradicting",
+          "mentioning",
+          "unclassified"
+        ],
+        "title": "TallyResponse",
+        "example": {
+          "citingPublications": 436,
+          "contradicting": 6,
+          "doi": "10.1016/j.biopsych.2005.08.012",
+          "mentioning": 308,
+          "supporting": 27,
+          "total": 347,
+          "unclassified": 6
+        }
+      },
+      "SearchResultsResponse": {
+        "properties": {
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "countIsApproximate": {
+            "type": "boolean",
+            "title": "Countisapproximate",
+            "default": false
+          },
+          "aggregations": {
+            "$ref": "#/components/schemas/AggregationSchema"
+          },
+          "hits": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResultSchema"
+            },
+            "type": "array",
+            "title": "Hits"
+          },
+          "suggestedTerm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestedterm"
+          },
+          "restrictedCites": {
+            "type": "boolean",
+            "title": "Restrictedcites",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "count",
+          "aggregations",
+          "hits"
+        ],
+        "title": "SearchResultsResponse"
+      },
+      "SearchResultSchema": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id"
+          },
+          "doi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doi"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "slug": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slug"
+          },
+          "authors": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AuthorResults"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authors"
+          },
+          "journal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Journal"
+          },
+          "shortJournal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shortjournal"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "memberId": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memberid"
+          },
+          "abstract": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abstract"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "lastUpdate": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastupdate"
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volume"
+          },
+          "issue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issue"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "tally": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TallyResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "issns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issns"
+          },
+          "editorialNotices": {
+            "items": {
+              "$ref": "#/components/schemas/EditorialNoticeSchema"
+            },
+            "type": "array",
+            "title": "Editorialnotices"
+          },
+          "normalizedTypes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Normalizedtypes"
+          },
+          "isOa": {
+            "type": "boolean",
+            "title": "Isoa",
+            "default": false
+          },
+          "oaStatus": {
+            "type": "string",
+            "title": "Oastatus",
+            "default": "closed"
+          },
+          "meshTypes": {
+            "items": {
+              "$ref": "#/components/schemas/PubmedMeshTypeResponse"
+            },
+            "type": "array",
+            "title": "Meshtypes"
+          },
+          "relevancyScore": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevancyscore"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/CitationSearch"
+            },
+            "type": "array",
+            "title": "Citations"
+          },
+          "fulltextExcerpts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Fulltextexcerpts"
+          },
+          "highlightedFields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Highlightedfields"
+          }
+        },
+        "type": "object",
+        "title": "SearchResultSchema"
+      },
+      "PaperResponse": {
+        "$refObservedInPath": "#/components/schemas/PaperResponse",
+        "observedOpenapiExampleFieldNames": [
+          "abstract",
+          "authors",
+          "doi",
+          "editorialNotices",
+          "id",
+          "issns",
+          "issue",
+          "journal",
+          "journalSlug",
+          "keywords",
+          "memberId",
+          "normalizedTypes",
+          "page",
+          "preprintLinks",
+          "publicationLinks",
+          "publisher",
+          "retracted",
+          "shortJournal",
+          "slug",
+          "title",
+          "type",
+          "volume",
+          "year"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "authFromOpenapiDescription": {
+    "restTokenEndpointMentionedInDescription": "https://api.scite.ai/auth_token_users/token",
+    "restTokenRequestBodyExample": {
+      "client_id": "",
+      "client_secret": "",
+      "grant_type": "client_credentials"
+    },
+    "restTokenResponseExample": {
+      "access_token": "eyJhbG...",
+      "token_type": "bearer",
+      "expire_in": 1711234567
+    },
+    "mcpBearerEndpointMentionedInDescription": "https://api.scite.ai/mcp",
+    "mcpBearerMethodMentionedInDescription": "tools/call",
+    "mcpBearerToolNameMentionedInDescription": "search_literature"
+  },
+  "wellKnownOauthAuthorizationServer": {
+    "issuer": "https://api.scite.ai",
+    "authorization_endpoint": "https://api.scite.ai/mcp/oauth/authorize",
+    "token_endpoint": "https://api.scite.ai/mcp/oauth/token",
+    "registration_endpoint": "https://api.scite.ai/mcp/oauth/register",
+    "scopes_supported": [
+      "mcp",
+      "ag:mcp"
+    ],
+    "response_types_supported": [
+      "code"
+    ],
+    "grant_types_supported": [
+      "authorization_code",
+      "refresh_token"
+    ],
+    "token_endpoint_auth_methods_supported": [
+      "none"
+    ],
+    "code_challenge_methods_supported": [
+      "S256"
+    ]
+  },
+  "pathOauthOrTokenDefinitionsInOpenapiPaths": {
+    "found": [],
+    "note": "The live OpenAPI prose mentions /auth_token_users/token and /mcp/oauth/* endpoints, and the well-known metadata returns /mcp/oauth/authorize, /mcp/oauth/token, and /mcp/oauth/register. No /oauth or /token endpoint definition was visible in the OpenAPI paths evidence captured for this fixture."
+  }
+}

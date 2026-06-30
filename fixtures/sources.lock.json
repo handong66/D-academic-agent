@@ -1,0 +1,92 @@
+[
+  {
+    "id": "keles2020",
+    "title": "A systematic review of social media use and depression, anxiety, and distress",
+    "authors": [
+      "Keles"
+    ],
+    "year": "2020",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/keles2020.txt",
+    "source_hash": "fd83c5ea7b5d57933ca07c4957c6b211f4c1f27e05a88337186d615c0fb0078d",
+    "citation_metadata": {
+      "bibtex_key": "keles2020"
+    },
+    "fulltext_status": "extracted"
+  },
+  {
+    "id": "odgers2020",
+    "title": "Adolescent social media use and mental health: a narrative review",
+    "authors": [
+      "Odgers"
+    ],
+    "year": "2020",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/odgers2020.txt",
+    "source_hash": "6a455d9179b18832cdf3d96da40d6b400fb23f0c41a4949422accc8cd72b1e45",
+    "citation_metadata": {
+      "bibtex_key": "odgers2020"
+    },
+    "fulltext_status": "extracted"
+  },
+  {
+    "id": "orben2019",
+    "title": "The association between adolescent well-being and digital technology use",
+    "authors": [
+      "Orben"
+    ],
+    "year": "2019",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/orben2019.txt",
+    "source_hash": "12505a7d751ac815a52e248e6ab60b1ea39078ded79142260e6077580010400e",
+    "citation_metadata": {
+      "bibtex_key": "orben2019"
+    },
+    "fulltext_status": "extracted"
+  },
+  {
+    "id": "primack2017",
+    "title": "Social media use and perceived social isolation among young adults",
+    "authors": [
+      "Primack"
+    ],
+    "year": "2017",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/primack2017.txt",
+    "source_hash": "6027abb7543de30adba9b290ac24c6dc1c826d0bc36fe363a128eebf6d0e6299",
+    "citation_metadata": {
+      "bibtex_key": "primack2017"
+    },
+    "fulltext_status": "extracted"
+  },
+  {
+    "id": "riehm2019",
+    "title": "Social media time and internalizing problems in a longitudinal cohort",
+    "authors": [
+      "Riehm"
+    ],
+    "year": "2019",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/riehm2019.txt",
+    "source_hash": "8eca880790d5facc51cb847d4c766bd7ef7fa9ba1b427c1b9e9242496ff5251f",
+    "citation_metadata": {
+      "bibtex_key": "riehm2019"
+    },
+    "fulltext_status": "extracted"
+  },
+  {
+    "id": "twenge2018",
+    "title": "Associations between screen time and depressive symptoms among adolescents",
+    "authors": [
+      "Twenge"
+    ],
+    "year": "2018",
+    "type": "scholarly_article",
+    "path_or_url": "fixtures/corpus/twenge2018.txt",
+    "source_hash": "34cd0248463f4cdc5c7817faaccc8c19408f860d61c887cb5f9c4d160c91c89b",
+    "citation_metadata": {
+      "bibtex_key": "twenge2018"
+    },
+    "fulltext_status": "extracted"
+  }
+]

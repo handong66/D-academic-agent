@@ -1,0 +1,59 @@
+{
+  "count": 1,
+  "countIsApproximate": false,
+  "aggregations": {},
+  "hits": [
+    {
+      "id": "paper-123",
+      "doi": "10.1016/j.biopsych.2005.08.012",
+      "title": "Sleep and academic performance in adolescents",
+      "slug": "sleep-and-academic-performance",
+      "authors": [
+        { "name": "Jane Doe" },
+        { "first": "John", "last": "Smith" }
+      ],
+      "journal": "Biological Psychiatry",
+      "shortJournal": "Biol Psychiatry",
+      "publisher": "Elsevier",
+      "memberId": 78,
+      "abstract": "A fixture abstract using the field names captured in C0.",
+      "year": 2006,
+      "date": "2006-03-01",
+      "lastUpdate": 1700000000,
+      "volume": "61",
+      "issue": "1",
+      "page": "1-10",
+      "tally": {
+        "citingPublications": 436,
+        "contradicting": 6,
+        "doi": "10.1016/j.biopsych.2005.08.012",
+        "mentioning": 308,
+        "supporting": 27,
+        "total": 347,
+        "unclassified": 6
+      },
+      "issns": ["0006-3223"],
+      "editorialNotices": [
+        {
+          "status": "retraction_notice",
+          "date": "2020-01-02",
+          "noticeDoi": "10.0000/notice",
+          "urls": ["https://example.test/notice"]
+        }
+      ],
+      "normalizedTypes": ["journal-article"],
+      "isOa": true,
+      "oaStatus": "gold",
+      "meshTypes": [],
+      "relevancyScore": 17.5,
+      "citations": [{ "doi": "10.0000/citing-one" }, { "doi": "10.0000/citing-two" }],
+      "fulltextExcerpts": [
+        "Students with longer sleep duration had higher grade point averages.",
+        "The association was weaker after adjustment for school start time."
+      ],
+      "highlightedFields": ["title", "abstract"]
+    }
+  ],
+  "suggestedTerm": null,
+  "restrictedCites": false
+}

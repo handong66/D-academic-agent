@@ -1,0 +1,45 @@
+{
+  "results": [
+    {
+      "abstract": "A synthetic cohort study fixture describing the association between sleep duration and academic performance in university students.",
+      "authors": ["Avery Chen", "Morgan Patel"],
+      "doi": "10.0000/consensus.sleep.001",
+      "journal_name": "Journal of Synthetic Education Research",
+      "pages": "101-112",
+      "publish_year": 2024,
+      "title": "Sleep duration and academic performance in university students",
+      "url": "https://consensus.app/papers/sleep-duration-academic-performance-chen-patel/000000000001",
+      "volume": "18",
+      "citation_count": 42,
+      "study_type": "non-rct observational study",
+      "takeaway": "Students reporting longer consistent sleep had modestly higher course grades after adjustment for baseline workload."
+    },
+    {
+      "abstract": "A synthetic randomized trial fixture testing a sleep hygiene program before final examinations.",
+      "authors": ["Jamie Rivera", "Taylor Nguyen", "Sam Okafor"],
+      "doi": "10.0000/consensus.sleep.002",
+      "journal_name": "Education and Health Methods",
+      "pages": "55-67",
+      "publish_year": 2022,
+      "title": "Sleep hygiene intervention before examinations",
+      "url": "https://consensus.app/papers/sleep-hygiene-examinations-rivera/000000000002",
+      "volume": "9",
+      "citation_count": 17,
+      "study_type": "rct",
+      "takeaway": "The intervention improved sleep regularity and was associated with a small improvement in examination scores."
+    },
+    {
+      "abstract": "A synthetic systematic review fixture summarizing studies on sleep quality and student learning outcomes.",
+      "authors": ["Casey Brooks"],
+      "doi": "10.0000/consensus.sleep.003",
+      "journal_name": "Review of Learning Sciences",
+      "pages": "200-233",
+      "publish_year": 2021,
+      "title": "Sleep quality and learning outcomes: a systematic review",
+      "url": "https://consensus.app/papers/sleep-quality-learning-outcomes-brooks/000000000003",
+      "volume": "14",
+      "citation_count": 88,
+      "study_type": "systematic review"
+    }
+  ]
+}

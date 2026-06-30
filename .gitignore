@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+out/
+/*.db
+/*.db-*
+/*.sqlite
+/*.sqlite-*
+fixtures/pdf_corpus/
+.opencode-plugin-codex/
+
+# electron-builder output
+release/

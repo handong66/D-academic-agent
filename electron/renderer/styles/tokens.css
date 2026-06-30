@@ -1,0 +1,119 @@
+/* D-academic-agent Reading Room — design tokens (M7a). Light is :root; dark is [data-theme="dark"].
+   The ThemeProvider sets data-theme on <html> (default follows the OS). Every color used in
+   the renderer MUST reference a token here — no hardcoded hex — so dark mode works everywhere. */
+
+:root {
+  /* surfaces — warm paper */
+  --paper: #fbfaf6;
+  --surface: #ffffff;
+  --surface-2: #f6f3ec;
+  --surface-sunken: #f3efe6;
+
+  /* ink — text */
+  --ink: #1c1a17;
+  --ink-2: #4a463e;
+  --ink-3: #8a857a;
+  --on-accent: #fbfaf6;
+
+  /* rules / hairlines */
+  --line: #ece8de;
+  --line-strong: #ded9cc;
+
+  /* primary accent — ink indigo */
+  --accent: #2e2a6b;
+  --accent-hover: #232058;
+  --accent-bg: #edeaf3;
+  --accent-text: #2e2a6b;
+
+  /* semantic — refined, never neon */
+  --support: #2f6b4f;
+  --support-bg: #edf2ec;
+  --support-line: #cde0d2;
+
+  --contra: #8a2d2d;
+  --contra-bg: #f6ebe8;
+  --contra-line: #e8d2cc;
+
+  --warn: #7a5512;          /* contested / weakly / unclear */
+  --warn-bg: #f8f1dd;
+  --warn-line: #e7d9b8;
+
+  --slate: #55585f;         /* neutral / unrelated */
+  --slate-bg: #eceef0;
+
+  --danger: #8a2d2d;
+  --danger-bg: #f6ebe8;
+  --danger-line: #e8d2cc;
+
+  /* typography */
+  --font-display: "Fraunces Variable", "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Hanken Grotesk Variable", "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* radii */
+  --r-sm: 6px;
+  --r-md: 9px;
+  --r-lg: 13px;
+
+  /* elevation — flat + precise (no heavy drop shadows) */
+  --shadow-card: 0 1px 0 var(--line);
+  --shadow-pop: 0 6px 24px rgba(28, 26, 23, 0.10);
+  --ring: 0 0 0 3px rgba(46, 42, 107, 0.16);
+
+  /* motion */
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --dur: 180ms;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #16150f;
+  --surface: #1e1c15;
+  --surface-2: #13120d;
+  --surface-sunken: #100f0b;
+
+  --ink: #e8e4d8;
+  --ink-2: #b0ab9c;
+  --ink-3: #7c776a;
+  --on-accent: #16150f;
+
+  --line: #2a281f;
+  --line-strong: #38352a;
+
+  --accent: #b3aef0;
+  --accent-hover: #c6c2f5;
+  --accent-bg: #262340;
+  --accent-text: #c6c2f5;
+
+  --support: #7cc59c;
+  --support-bg: #18271d;
+  --support-line: #2c4636;
+
+  --contra: #e09b8f;
+  --contra-bg: #2c1b17;
+  --contra-line: #4a302a;
+
+  --warn: #ddbd76;
+  --warn-bg: #271f10;
+  --warn-line: #48391d;
+
+  --slate: #9aa0a8;
+  --slate-bg: #20222a;
+
+  --danger: #e09b8f;
+  --danger-bg: #2c1b17;
+  --danger-line: #4a302a;
+
+  --shadow-card: 0 1px 0 var(--line);
+  --shadow-pop: 0 8px 28px rgba(0, 0, 0, 0.4);
+  --ring: 0 0 0 3px rgba(179, 174, 240, 0.22);
+
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+  }
+}
