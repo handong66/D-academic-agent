@@ -1,69 +1,94 @@
 # D-academic-agent
 
-D-academic-agent is a local-first evidence-checking harness for academic literature workflows. It helps a
-researcher inspect whether a claim is actually supported by the retrieved paper snippet, then keeps the result
-traceable to a source, quote, locator, verdict, and run trace.
+[中文文档](README.zh-CN.md) | English
 
-The project has three usable faces:
+D-academic-agent is a local-first academic evidence checking agent. It helps researchers inspect whether a
+claim, draft sentence, or citation is supported by the paper snippets the app actually retrieved.
 
-- **Reading Room**: an Electron desktop workspace for draft checks, claim review, paper-library work, and setup.
-- **Headless CLI**: offline and provider-backed commands for eval, replay, planning, drills, and ablation.
+The project has three usable surfaces:
+
+- **Reading Room**: the Electron desktop workspace for draft checks, one-claim review, writing support, library
+  work, evidence tables, quality checks, and provider setup.
+- **Headless CLI**: repeatable commands for eval, replay, planning, drills, ablation, and MCP startup.
 - **MCP server**: a stdio tool surface for other agent hosts.
 
 The core rule is strict: the checker judges from retrieved snippets only. It must not fill gaps from model priors,
 semantic hunches, or surface similarity.
 
-## Status
+## Current State
 
 Current as of 2026-06-30:
 
 - The default path runs offline with the seed corpus in `fixtures/corpus/`.
 - Reading Room has 8 tabs: Check Draft, Check Claim, Writing Desk, Checking Scope, My Library, Evidence Table,
   Quality Check, and Settings.
-- Package, Electron, UI, and MCP identities use `D-academic-agent` / `d-academic-agent`.
+- Public identity uses `D-academic-agent`; machine-readable ids use `d-academic-agent`.
 - External scholarly providers are opt-in and require user-supplied credentials.
-- The seed eval is reporting-only. It is a sanity check for this repository, not a public benchmark.
+- The seed eval is reporting-only. It is a repository sanity check, not a public benchmark.
 
 ## Screenshots
 
-These are representative screenshots captured from the current Electron app after building `electron/dist/*`.
-Checking Scope, My Library, and Evidence Table are described below even though they are not pictured here.
+These screenshots are captured from the current Electron app with:
+
+```sh
+npm run screenshots:readme
+```
 
 ### Check Draft
 
-Paste draft prose with citations. The app extracts cited claims, resolves citation mentions, retrieves snippets
-from readable sources, and returns verdict cards with quotes, locators, confidence, reasons, and safer wording
-where available.
+Paste prose with citations. Reading Room extracts cited claims, resolves citation mentions, retrieves snippets from
+readable sources, and shows verdict cards with quotes, locators, confidence, rationale, and safer wording.
 
-![Check Draft citation audit](docs/assets/readme/check-draft.png)
+![Check Draft citation audit](docs/assets/readme/en/check-draft.png)
 
 ### Check Claim
 
-Enter one thesis or research claim. The app runs a visible `plan -> retrieve -> judge -> report` pipeline, then
-summarizes supporting and contradicting evidence.
+Enter one thesis or research claim. The app runs a visible `plan -> retrieve -> judge -> report` pipeline and
+separates supporting evidence from contradicting evidence.
 
-![Check Claim evidence map](docs/assets/readme/check-claim.png)
+![Check Claim evidence map](docs/assets/readme/en/check-claim.png)
 
 ### Writing Desk
 
 Paste a paragraph to split it into factual claims, classify claim type, flag unsupported or overclaimed wording,
-and inspect local evidence. When external research is enabled, each claim can launch an editable provider query.
+and inspect local evidence. External search is launched only from user-confirmed query text.
 
-![Writing Desk claim map](docs/assets/readme/writing-desk.png)
+![Writing Desk claim map](docs/assets/readme/en/writing-desk.png)
+
+### Checking Scope
+
+See the active retrieval corpus. This is the material the checker can search now; it is separate from the persistent
+paper library.
+
+![Checking Scope source list](docs/assets/readme/en/checking-scope.png)
+
+### My Library
+
+Import PDFs, manage local sources, inspect reference health when providers are configured, and rebuild indexes when
+provider settings change.
+
+![My Library paper workspace](docs/assets/readme/en/my-library.png)
+
+### Evidence Table
+
+Build a project-local literature matrix from the active corpus. The output is guarded so CLI, MCP, and desktop writes
+stay under project-local paths.
+
+![Evidence Table matrix](docs/assets/readme/en/evidence-table.png)
 
 ### Quality Check
 
 Run the built-in seed eval to inspect macro-F1, groundedness signals, trace counts, confusion matrix, and failure
 cases. This view is for development sanity checks and drift diagnosis, not leaderboard claims.
 
-![Quality Check seed eval](docs/assets/readme/quality-check.png)
+![Quality Check seed eval](docs/assets/readme/en/quality-check.png)
 
 ### Settings
 
 Choose offline, local-download, or remote providers; configure corpus and library paths; store secret references;
 enable scite, Consensus REST, or Consensus MCP; switch language; and change theme.
 
-![Settings provider configuration](docs/assets/readme/settings.png)
+![Settings provider configuration](docs/assets/readme/en/settings.png)
 
 ## Quick Start
 
@@ -78,11 +103,11 @@ default demo path.
 The default judge is intentionally lightweight. It is useful for exercising the interface, but real citation work
 should switch to a stronger local, Ollama-compatible, or OpenAI-compatible judge in Settings.
 
-## Reading Room Guide
+## Reading Room Workflows
 
 ### Check Draft
 
-Use this when you already have prose with citations. The draft audit pipeline:
+Use Check Draft when you already have prose with citations. The draft audit pipeline:
 
 1. Splits prose into sentences.
 2. Detects citation mentions.
@@ -92,56 +117,49 @@ Use this when you already have prose with citations. The draft audit pipeline:
 6. Judges the claim from the retrieved snippet only.
 7. Shows verdict, quote, locator, confidence, rationale, suggested rewrite, and corpus counter-evidence.
 
-Possible verdicts are `supports`, `weakly_supports`, `unsupported`, `contradicts`, and `unclear`.
+Possible claim verdicts are `supports`, `weakly_supports`, `unsupported`, `contradicts`, and `unclear`.
 
 ### Check Claim
 
-Use this for a standalone thesis or research claim. The planner decomposes the claim into subqueries, retrieves
-evidence from the active corpus or library, judges snippets, and reports:
+Use Check Claim for a standalone thesis or research claim. The planner decomposes the claim into subqueries,
+retrieves evidence from the active corpus or library, judges snippets, and reports:
 
 - supporting source count;
 - contradicting source count;
 - mixed evidence count;
 - consensus and decisiveness scores;
 - representative supporting and contradicting snippets;
-- a source locator for each visible evidence card.
+- source locators for visible evidence cards.
 
 ### Writing Desk
 
-Use this before turning notes into prose or before revising a paragraph. It identifies factual claims, labels their
-claim type, highlights risk status, and suggests safer wording. It distinguishes:
-
-- claims with local support;
-- weak support;
-- missing citations;
-- overclaims;
-- contradictions;
-- unclear evidence.
+Use Writing Desk before turning notes into prose or before revising a paragraph. It identifies factual claims, labels
+claim type, highlights risk status, and suggests safer wording. It distinguishes local support, weak support, missing
+citations, overclaims, contradictions, and unclear evidence.
 
 External search from Writing Desk sends only the editable query text the user confirms. It does not silently upload
 the full draft or local library.
 
 ### Checking Scope
 
-This tab shows the active retrieval corpus. It is different from My Library: Checking Scope is what the checker can
-currently search, while My Library is the persistent user-imported paper collection.
+Checking Scope shows the active retrieval corpus. It answers: "What can the checker currently search?"
 
 ### My Library
 
-Use this for local paper management. The library supports PDF import, DOI capture, source and chunk persistence,
-automatic re-indexing when provider settings change, external search when configured, and reference-health checks
-where provider data is available.
+My Library is the persistent user-imported paper collection. It supports PDF import, DOI capture, source and chunk
+persistence, automatic re-indexing when provider settings change, external search when configured, and
+reference-health checks where provider data is available.
 
 The default parser is `unpdf`. GROBID can be selected when section-aware text and parsed bibliographies are useful.
 
 ### Evidence Table
 
-Build a project-local literature matrix from the active corpus. In Reading Room, the app manages the output path;
-CLI and MCP write paths use project-local guards.
+Evidence Table creates a spreadsheet-like literature matrix with claims, verdicts, quotes, and locators. Reading
+Room manages the output path; CLI and MCP use project-local write guards.
 
 ### Quality Check
 
-Run the seed eval and inspect failure cases. The report includes:
+Quality Check runs the seed eval and displays:
 
 - per-class precision, recall, and F1;
 - macro-F1;
@@ -247,7 +265,7 @@ stay behind key references.
 | PDF | `unpdf` | Yes | No | Built-in PDF text parser. |
 | PDF | `grobid` | No | No API key | Uses a local or reachable GROBID service. |
 | External research | scite REST/MCP | No | Yes | Search and reference-health signals when configured. |
-| External research | Consensus REST | No | Yes | Search through user-supplied API key. |
+| External research | Consensus REST | No | Yes | Search through a user-supplied API key. |
 | External research | Consensus MCP | No | OAuth token | OAuth 2.1 PKCE and Dynamic Client Registration flow. |
 
 Normal draft checks and local library work do not require scite or Consensus. External scholarly results are
@@ -270,9 +288,15 @@ The eval system records versioned trace events with retrieval ranks, source hash
 outbound-snippet audit data. This is for debugging and regression diagnosis. Do not present M0/M1 seed numbers as
 an authoritative benchmark.
 
-## Verification
+## Privacy And Data Boundaries
 
-Use these before publishing implementation or documentation claims:
+- Local draft checks and library search can run without online APIs.
+- Imported PDFs and local-library chunks stay on this computer unless the user enables an online provider.
+- External scholarly search sends only the query text shown in the relevant UI control.
+- Remote judge and embedding providers may receive snippets or search text according to the selected provider.
+- Saved API keys, OAuth tokens, and client secrets are write-only in the UI and are resolved through secret refs.
+
+## Development Commands
 
 ```sh
 npm test
@@ -280,6 +304,7 @@ npm run typecheck
 npm run lint
 npm run acceptance
 npm run build:app
+npm run screenshots:readme
 ```
 
 For packaged macOS app output:
@@ -293,6 +318,7 @@ as verified only when the relevant credentials were supplied for that exact run.
 
 ## Documentation Map
 
+- [Chinese README](README.zh-CN.md): Chinese project guide with Chinese UI screenshots.
 - [Current State](docs/CURRENT_STATE.md): terse implementation snapshot and verification gates.
 - [Agent Instructions](AGENTS.md): repository guardrails and constitution router.
 - [Claim Check Constitution](constitutions/CLAIM_CHECK_CONSTITUTION.md): snippet-only citation checking rules.

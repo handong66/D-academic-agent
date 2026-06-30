@@ -10,6 +10,7 @@
     "freeze": "tsx scripts/freeze.ts",
     "harness": "tsx src/cli.ts",
     "build:app": "node electron/build.mjs",
+    "screenshots:readme": "npm run build:app && node scripts/capture-readme-screenshots.mjs",
     "package": "npm run build:app && electron-rebuild -v 42.4.1 -w better-sqlite3 --force && electron-builder --mac --dir; status=$?; npm rebuild better-sqlite3 >/dev/null; exit $status",
     "start": "node electron/build.mjs && electron electron/dist/main.cjs",
     "acceptance": "node electron/build.mjs && node scripts/acceptance.mjs"
